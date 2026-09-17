@@ -535,6 +535,10 @@ Audit history
 
 ORIGIN will investigate whether an operating system that exposes structured, permission-controlled information about connected devices can enable an AI agent to perform explainable security assessment and remediation while maintaining strict limits on its authority.
 
+## H22 — Automatic OS Adaption
+
+Could an OS automatically construct or adapt a minimal execution environment based on what an application actually needs?
+
 **Research question:**
 
 Should AI agents be treated as first-class operating-system entities rather than ordinary applications?
