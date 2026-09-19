@@ -69,3 +69,6 @@ Testing/
 .cache/
 
 .vscode/
+
+# Build artifacts
+*.elf
