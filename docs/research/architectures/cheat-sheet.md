@@ -1,244 +1,303 @@
 # ORIGIN OS — Kernel Architecture Cheat Sheet
 
-> Goal: Compare existing architectures before designing ORIGIN OS.
-> Do not treat any architecture as "best" — understand its trade-offs.
+> Master comparison of existing kernel architecture families.
+> Purpose: understand trade-offs before designing ORIGIN OS.
 
 ---
 
-## 1. Master Comparison
+## Master Comparison
 
-| Architecture | Core Idea | Kernel Size | Where Services Run | Isolation | Performance | Flexibility | Complexity | Main Strength | Main Weakness |
+| Architecture | Core Idea | Kernel Size | Services | Isolation | Performance | Flexibility | Complexity | Main Strength | Main Weakness |
 |---|---|---|---|---|---|---|---|---|---|
-| **Monolithic** | Most OS services inside one kernel | Large | Kernel space | Low–Medium | High | High | High | Direct communication | Large privileged codebase |
+| **Monolithic** | Most OS services inside one kernel | Large | Mostly kernel space | Low–Medium | High | High | High | Direct communication | Large privileged codebase |
 | **Microkernel** | Keep only essential mechanisms in kernel | Small | Mostly user space | High | Medium–High | High | High | Fault isolation | IPC/coordination overhead |
 | **Hybrid** | Combine monolithic and microkernel ideas | Medium–Large | Kernel + user space | Medium | High | High | High | Balance of approaches | Trade-offs remain |
-| **Exokernel** | Kernel protects/allocates resources; software controls usage | Very small | Application/library OS | High | Potentially High | Very High | High | Hardware/resource control | More responsibility for software |
-| **Nanokernel** | Extremely minimal privileged core | Extremely small | Mostly outside kernel | High | Potentially High | High | High | Tiny TCB | System-wide complexity |
-| **Unikernel** | Application + required OS components become one image | Tiny/specialized | Single specialized image | High between instances | High | Low | Medium–High | Specialization | Poor general-purpose flexibility |
-| **Multikernel** | Multiple cooperating kernel instances manage a many-core machine | Multiple small kernels | Multiple kernel domains | Potentially High | High for local work | High | Very High | Scalability/locality | Communication & coordination |
+| **Exokernel** | Kernel protects/allocates resources; software controls usage | Very small | Application/library OS | High | Potentially High | Very High | High | Resource control | More responsibility |
+| **Nanokernel** | Extremely small privileged core | Extremely small | Mostly outside kernel | High | Potentially High | High | High | Small TCB | System complexity |
+| **Unikernel** | Application + required OS components form one image | Tiny/specialized | Single specialized image | High between instances | High | Low | Medium–High | Specialization | Low flexibility |
+| **Multikernel** | Multiple cooperating kernel instances | Multiple small kernels | Multiple kernel domains | Potentially High | High for local work | High | Very High | Scalability/locality | Coordination complexity |
 
 ---
 
-# 2. Architecture-by-Architecture
+# Monolithic Kernel
 
-## Monolithic Kernel
+**Core idea:** Most major OS services run inside one privileged kernel.
 
-### Core Idea
-Most major OS services run inside one privileged kernel address space.
-
-### Typical Components
-- Scheduler
-- Memory management
-- Filesystems
-- Networking
-- Device drivers
-- Process management
-
-### Advantages
-- Direct communication between components
+**Strengths**
+- Direct communication
 - High performance
-- Mature hardware support
 - Flexible
+- Mature hardware support
 
-### Trade-offs
+**Trade-offs**
 - Large trusted computing base
 - Weak fault isolation
-- Kernel bugs can affect the entire system
-- Large codebase
+- Kernel bugs can affect the whole system
+- Large interconnected codebase
 
-### Security
-More components run with high privileges, increasing the potential impact of a compromised kernel component.
+**Examples:** Linux, FreeBSD, OpenBSD, NetBSD
 
-### Performance
-Generally strong because kernel components can communicate directly.
-
-### Complexity
-The kernel can become extremely large and interconnected.
-
-### Examples
-- Linux
-- FreeBSD
-- OpenBSD
-- NetBSD
-
-### ORIGIN Lesson
-**Keep the performance benefits of direct communication without unnecessarily increasing the privileged attack surface.**
+**ORIGIN lesson:** Can we keep direct communication without unnecessarily increasing the privileged attack surface?
 
 ---
 
 # Microkernel
 
-### Core Idea
-Keep only essential mechanisms inside the kernel.
+**Core idea:** Keep only essential mechanisms in the kernel; move services such as drivers and filesystems into user space.
 
-Other services run in user space.
+**Strengths**
+- Strong isolation
+- Smaller TCB
+- Modular services
+- Failed services can potentially be restarted
 
-### Kernel Usually Handles
-- Scheduling
-- Basic memory management
-- Address spaces/protection
-- IPC
-- Interrupt handling
-
-### Services Outside Kernel
-- Filesystems
-- Device drivers
-- Networking
-- Other OS services
-
-### Advantages
-- Stronger fault isolation
-- Smaller trusted computing base
-- Modular design
-- Failed services can potentially be restarted independently
-
-### Trade-offs
+**Trade-offs**
 - IPC overhead
-- More context switching
-- More communication complexity
-- Distributed services are harder to coordinate
+- Context switching
+- Coordination complexity
+- More complicated service communication
 
-### Security
-Smaller privileged core can reduce the amount of code that must be trusted.
+**Examples:** MINIX 3, seL4, QNX
 
-### Performance
-Potential overhead from IPC and protection-boundary crossings.
-
-### Complexity
-Kernel may be simpler, but the overall system can become more complex.
-
-### Examples
-- MINIX 3
-- seL4
-- QNX
-
-### ORIGIN Lesson
-**Isolation is valuable, but communication between isolated components has a cost.**
+**ORIGIN lesson:** Isolation is valuable, but communication between isolated components has a cost.
 
 ---
 
 # Hybrid Kernel
 
-### Core Idea
-Combine ideas from monolithic and microkernel architectures.
+**Core idea:** Combine ideas from monolithic and microkernel architectures.
 
-Some functionality remains in kernel space while other components can be modularized or isolated.
-
-### Advantages
-- Can retain direct communication for performance
+**Strengths**
+- Can retain direct communication
 - Can introduce modularity/isolation
-- Flexible architectural choices
+- Flexible design
 
-### Trade-offs
-- Large privileged components may remain
-- Isolation is not necessarily as strong as a pure microkernel
-- Architecture can become complicated
+**Trade-offs**
+- Some components still run with high privileges
+- Can remain complex
+- Isolation depends on implementation
 - Trade-offs are moved rather than eliminated
 
-### Security
-Depends heavily on which components run with kernel privileges.
+**Examples:** Windows NT family, Apple XNU
 
-### Performance
-Can be high because important components can communicate directly.
-
-### Complexity
-Potentially high because the system combines multiple architectural approaches.
-
-### Examples
-- Windows NT family
-- Apple XNU
-
-### ORIGIN Lesson
-**Combining architectures can balance trade-offs, but does not automatically eliminate them.**
+**ORIGIN lesson:** Combining architectures can balance trade-offs but does not automatically eliminate them.
 
 ---
 
 # Exokernel
 
-### Core Idea
-The kernel provides protected access to hardware resources while allowing applications or library OSes to decide how those resources are used.
+**Core idea:** The kernel mainly provides protection and resource allocation while applications or library OSes decide how resources are used.
 
-### Kernel Focus
-- Resource allocation
-- Protection
-- Hardware multiplexing
-
-### Advantages
-- Very high application control
+**Strengths**
+- High hardware/resource control
 - Application-specific optimization
-- Minimal abstraction imposed by the kernel
+- Minimal imposed abstractions
 - Potentially high performance
 
-### Trade-offs
-- More responsibility for applications/library OSes
+**Trade-offs**
+- More responsibility for applications
 - More low-level programming
 - Resource management becomes harder
 - Security boundaries become more complicated
 
-### Security
-The kernel still enforces protection, but applications receive much more low-level control.
+**Examples:** MIT Exokernel research
 
-### Performance
-Can be very high because unnecessary abstractions can be avoided.
-
-### Complexity
-Kernel may be small, but complexity moves into library OSes and applications.
-
-### Examples
-- MIT Exokernel
-- Nemesis (related research direction)
-
-### ORIGIN Lesson
-**Separate resource protection from resource policy whenever useful.**
+**ORIGIN lesson:** Separate resource protection from resource policy when useful.
 
 ---
 
 # Nanokernel
 
-### Core Idea
-Make the privileged kernel layer extremely small and keep only minimal mechanisms inside it.
+**Core idea:** Keep the privileged kernel layer extremely small and move more functionality outside it.
 
-### Advantages
-- Very small trusted computing base
+**Strengths**
+- Very small TCB
 - Minimal privileged code
 - Potentially easier verification
 - Strong separation of responsibilities
 
-### Trade-offs
+**Trade-offs**
 - More functionality outside the kernel
 - Communication complexity
-- System-wide design becomes harder
-- Performance can depend heavily on implementation
+- System-wide complexity can increase
+- Performance depends heavily on implementation
 
-### Security
-A smaller privileged core can reduce the amount of code that must be trusted.
-
-### Performance
-Potentially good, but moving functionality outside the kernel can introduce communication overhead.
-
-### Complexity
-Kernel complexity decreases, but system complexity can increase.
-
-### Examples
-Nanokernels are primarily associated with research and specialized systems rather than mainstream desktop OSes.
-
-### ORIGIN Lesson
-**Minimize privileged code, but don't simply push complexity somewhere else without measuring the result.**
+**ORIGIN lesson:** Minimize privileged code without simply moving the complexity somewhere else.
 
 ---
 
 # Unikernel
 
-### Core Idea
-Combine one application with only the OS functionality it needs into a specialized image.
-
-### Structure
+**Core idea:** Combine one application with only the OS components and libraries it needs into a specialized image.
 
 ```text
 Application
-    +
+     +
 Required OS components
-    +
+     +
 Required libraries/drivers
-    ↓
+     ↓
 One specialized image
+```
+
+**Strengths**
+- Small footprint
+- Fast startup potential
+- Specialized environment
+- Reduced unnecessary software
+- Potentially smaller attack surface
+- Strong isolation between separate instances
+
+**Trade-offs**
+- Poor general-purpose flexibility
+- Application and OS become tightly coupled
+- Updates may require rebuilding the image
+- Many images can increase maintenance complexity
+
+**Examples:** MirageOS, IncludeOS, OSv
+
+**ORIGIN lesson:** Specialization can improve efficiency, but static specialization creates maintenance problems.
+
+---
+
+# Multikernel
+
+**Core idea:** Treat a many-core machine as multiple cooperating kernel instances instead of one centralized kernel.
+
+```text
+Many-Core Machine
+
+Kernel A → Cores 0–3
+Kernel B → Cores 4–7
+Kernel C → Cores 8–11
+Kernel D → Cores 12–15
+
+        ↕
+   Communication
+```
+
+**Strengths**
+- Scalability on many-core systems
+- Local decision making
+- Better locality
+- Reduced dependence on one centralized kernel
+- Potential fault isolation
+
+**Trade-offs**
+- Communication overhead
+- Coordination complexity
+- Global resource management is harder
+- Failure recovery is harder
+- Maintaining consistency can be difficult
+
+**Example:** Barrelfish
+
+**ORIGIN lesson:** Distributed control can improve scalability, but coordination becomes a fundamental cost.
+
+---
+
+# Recurring Trade-offs
+
+## 1. Performance vs Isolation
+
+```text
+More isolation
+     ↓
+More communication
+     ↓
+Potential overhead
+
+Less isolation
+     ↓
+Direct communication
+     ↓
+Potentially better performance
+```
+
+## 2. Centralization vs Distribution
+
+```text
+Centralized control
+     ↓
+Simpler coordination
+     ↓
+Potential bottlenecks
+
+Distributed control
+     ↓
+Better scalability/locality
+     ↓
+Harder coordination
+```
+
+## 3. Generalization vs Specialization
+
+```text
+General-purpose
+     ↓
+Flexible
+     ↓
+More functionality
+
+Specialized
+     ↓
+Efficient
+     ↓
+Harder to maintain/adapt
+```
+
+## 4. Kernel Size vs System Complexity
+
+```text
+Smaller kernel
+     ≠
+Simpler entire system
+
+Complexity can move outside the kernel.
+```
+
+---
+
+# Questions ORIGIN Should Investigate
+
+1. Can strong isolation be achieved without excessive IPC overhead?
+2. Can high performance be maintained without putting everything in kernel space?
+3. Can resource management become adaptive instead of relying only on static policies?
+4. Can an OS automatically specialize itself for different workloads?
+5. Can distributed control scale without excessive coordination costs?
+6. Can failures be isolated and recovered automatically?
+7. Can the trusted computing base remain small?
+8. Can the system adapt to changing workloads?
+9. Can AI safely assist system-level decisions?
+10. Can functionality dynamically move between privilege domains?
+11. Can system complexity actually be reduced rather than merely moved?
+
+---
+
+# ORIGIN Research Principle
+
+Do **not** ask:
+
+> "Which existing architecture should ORIGIN copy?"
+
+Ask:
+
+> "What fundamental problems remain after studying existing architectures?"
+
+Research → Identify limitations → Find recurring trade-offs → Form hypotheses → Design experiments → Measure → Analyze → Build → Revise
+
+---
+
+# Current ORIGIN Hypothesis
+
+**Not a final architecture.**
+
+> Can an operating system dynamically adapt its resource management, isolation, and system policies according to workload and system state while maintaining strong security and predictable performance?
+
+This hypothesis must be tested through research and experiments.
+
+---
+
+# Golden Rule
+
+> **Research first. Architecture second. Implementation third.**
