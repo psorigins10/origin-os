@@ -2,6 +2,14 @@
 
 ## Why ORIGIN OS Exists
 
+> **ORIGIN OS started as a project with three main goals:**
+>
+> **1. To understand computer systems more deeply by building an operating system from the ground up.**
+>
+> **2. To explore how intelligent systems can participate in operating-system decisions.**
+>
+> **3. To investigate how the trade-offs found in existing operating systems can be addressed through new or existing architectural designs.**
+
 ORIGIN OS began with a simple goal: **to understand computers more deeply by building one from the ground up.**
 
 Modern operating systems hide enormous amounts of complexity behind abstractions. They make computers usable, but those abstractions can also make it difficult to understand what is actually happening between hardware, the kernel, and applications.
