@@ -155,33 +155,6 @@ Current limitations include:
 This implementation is intended for learning and research, not production
 use.
 
-## Roadmap
-
-The long-term goal for OriginBoot is to:
-
-- Access the UEFI filesystem
-- Locate the Origin OS kernel
-- Read the kernel from disk
-- Validate and parse the kernel ELF
-- Allocate and prepare memory
-- Load the kernel into memory
-- Collect the UEFI memory map
-- Create boot information for the kernel
-- Set up the initial kernel execution environment
-- Exit UEFI Boot Services
-- Transfer control to the Origin OS kernel
-
-## Development Philosophy
-
-OriginBoot is being developed incrementally with an emphasis on understanding
-the boot process rather than relying on a pre-built bootloader.
-
-Each stage is implemented and tested before moving deeper into the boot
-process.
-
-The goal is to understand what happens between firmware startup and kernel
-execution and eventually implement those stages directly in OriginBoot.
-
 ## Version
 
 Current development stage: **Kernel ELF Loading and Handoff**
