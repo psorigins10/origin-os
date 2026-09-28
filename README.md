@@ -1,29 +1,54 @@
 # ORIGIN OS
 
-ORIGIN OS is an experimental operating system project focused on understanding computer systems through implementation.
+ORIGIN OS is a private operating system project built from the ground up.
 
-## Goals
+## Project Structure
 
-- Build an operating system from the ground up.
-- Explore operating-system architecture and design.
-- Investigate how adaptive systems can participate in operating-system decisions.
+```text
+origin-os/
+├── arch/          # Architecture-specific code
+├── bootloader/    # UEFI bootloader
+├── drivers/       # Device drivers
+├── fs/            # Filesystem
+├── kernel/        # Kernel
+├── mm/            # Memory management
+├── sched/         # Scheduler
+├── ai/            # AI subsystem
+├── docs/          # Project documentation
+├── scripts/       # Build and development scripts
+├── tests/         # Tests
+└── tools/         # Development tools
+```
+
+## Build
+
+From the repository root:
+
+```bash
+make
+```
+
+## Run
+
+Build and run ORIGIN OS with QEMU:
+
+```bash
+make run
+```
+
+QEMU uses OVMF as the UEFI firmware environment.
 
 ## Status
 
-**Early Development**
+ORIGIN OS is under active development.
 
-Current work includes:
+Current milestone:
 
-- x86-64 architecture
-- Freestanding UEFI bootloader
-- Kernel development
-- Memory management
-- CPU scheduling
-- Filesystems
-- Device drivers
+* UEFI bootloader
+* Automated build system
+* Automated ESP preparation
+* QEMU/OVMF boot workflow
 
 ## License
 
-Copyright (c) 2026 PSOrigins. All rights reserved.
-
-See `LICENSE` for details.
+See [LICENSE](LICENSE).
