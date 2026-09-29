@@ -2,7 +2,9 @@
 #define EFI_SYSTEM_TABLE_H
 
 
-
+// ------------------------------------------
+// -------------------------------------------
+// Included Files
 #include "efi_types.h"
 
 #include "protocols/efi_simple_text_output.h"
@@ -12,6 +14,8 @@
 #include "services/efi_boot_services.h"
 
 #include "tables/efi_configuration_table.h"
+// -------------------------------------------
+// ------------------------------------------
 
 
 
