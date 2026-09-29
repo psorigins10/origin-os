@@ -44,10 +44,14 @@ ORIGIN OS is under active development.
 
 Current milestone:
 
-* UEFI bootloader
-* Automated build system
-* Automated ESP preparation
-* QEMU/OVMF boot workflow
+- UEFI bootloader
+- UEFI system table access
+- Console output
+- UEFI Boot Services access
+- Memory map acquisition
+- Automated build system
+- Automated ESP preparation
+- QEMU/OVMF boot workflow
 
 ## License
 

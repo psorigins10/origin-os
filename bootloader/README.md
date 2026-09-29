@@ -1,8 +1,6 @@
 # ORIGIN Boot
 
-> ORIGIN OS BOOTLOADER
-
-The ORIGIN OS bootloader is a UEFI application responsible for initializing the boot environment and preparing the system for kernel execution.
+ORIGIN OS bootloader — a UEFI application responsible for preparing the system for kernel execution.
 
 ## Structure
 
@@ -23,30 +21,28 @@ make
 
 ## Run
 
-Build and boot the bootloader with QEMU:
+Boot with QEMU and OVMF:
 
 ```bash
 make run
 ```
 
-The QEMU environment uses OVMF as the UEFI firmware.
-
 ## Current Status
 
-* UEFI application entry point
-* UEFI system table access
-* Console output
-* UEFI protocol and service declarations
-* Automated ESP preparation
-* QEMU/OVMF boot workflow
+- UEFI application entry point
+- UEFI system table access
+- Console output
+- UEFI Boot Services access
+- Memory map acquisition
+- Automated ESP preparation
+- QEMU/OVMF boot workflow
 
 ## Roadmap
 
-* UEFI Boot Services
-* Filesystem access
-* Kernel loading
-* Memory map acquisition
-* Graphics information
-* ACPI discovery
-* ExitBootServices()
-* Kernel handoff
+- Memory map validation
+- Filesystem access
+- Kernel loading
+- Graphics information
+- ACPI discovery
+- ExitBootServices()
+- Kernel handoff
