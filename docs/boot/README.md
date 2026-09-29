@@ -1,10 +1,17 @@
-# Boot Documentation
+# ORIGIN Boot Documentation
 
-Documentation covering the ORIGIN OS boot process, UEFI interface, build system, and boot testing.
+Documentation for the ORIGIN OS bootloader.
 
-## Documents
+## Architecture
 
-* [Boot Process](boot-process.md) — Boot flow and bootloader responsibilities.
-* [UEFI](uefi.md) — UEFI interfaces used by the bootloader.
-* [Build System](build-system.md) — Bootloader compilation and ESP preparation.
-* [Testing](testing.md) — Bootloader testing with QEMU and OVMF.
+- [Boot Process](architecture/boot-process.md)
+
+## Development
+
+- [Build System](development/build-system.md)
+- [Testing](development/testing.md)
+
+## UEFI
+
+- [UEFI](uefi/uefi.md)
+- [Memory Map](uefi/memory-map.md)
