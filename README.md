@@ -1,23 +1,19 @@
 # ORIGIN OS
 
-ORIGIN OS is a private operating system project built from the ground up.
+ORIGIN OS is a private operating system project being built from the ground up.
 
 ## Project Structure
 
 ```text
 origin-os/
-├── arch/          # Architecture-specific code
 ├── bootloader/    # UEFI bootloader
-├── drivers/       # Device drivers
-├── fs/            # Filesystem
-├── kernel/        # Kernel
-├── mm/            # Memory management
-├── sched/         # Scheduler
-├── ai/            # AI subsystem
-├── docs/          # Project documentation
+│   ├── include/   # UEFI and bootloader interfaces
+│   └── src/       # Bootloader implementation
+├── docs/          # Architecture, boot, and research documentation
 ├── scripts/       # Build and development scripts
-├── tests/         # Tests
-└── tools/         # Development tools
+├── Makefile       # Build and run targets
+├── README.md
+└── LICENSE
 ```
 
 ## Build
@@ -36,22 +32,29 @@ Build and run ORIGIN OS with QEMU:
 make run
 ```
 
-QEMU uses OVMF as the UEFI firmware environment.
+QEMU uses OVMF to provide the UEFI firmware environment.
 
-## Status
+## Current Status
 
-ORIGIN OS is under active development.
+ORIGIN is currently in the UEFI bootloader stage.
 
-Current milestone:
+Implemented and verified:
 
-- UEFI bootloader
+- UEFI bootloader entry point
 - UEFI system table access
 - Console output
 - UEFI Boot Services access
-- Memory map acquisition
+- UEFI memory map acquisition
+- Memory map dumping
 - Automated build system
-- Automated ESP preparation
+- ESP image preparation
 - QEMU/OVMF boot workflow
+
+The current bootloader can start under UEFI, acquire the memory map, and dump its descriptors successfully.
+
+## Roadmap
+
+The next major milestone is implementing a correct `ExitBootServices()` flow, followed by the boot protocol and kernel-loading stages.
 
 ## License
 
