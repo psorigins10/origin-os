@@ -6,10 +6,13 @@ ORIGIN OS is a private operating system project being built from the ground up.
 
 ```text
 origin-os/
+├── arch/          # Architecture-specific kernel entry and low-level code
 ├── bootloader/    # UEFI bootloader
-│   ├── include/   # UEFI and bootloader interfaces
+│   ├── include/   # UEFI, ELF, and bootloader interfaces
 │   └── src/       # Bootloader implementation
 ├── docs/          # Architecture, boot, and research documentation
+├── include/       # Shared boot interfaces
+├── kernel/        # ORIGIN kernel
 ├── scripts/       # Build and development scripts
 ├── Makefile       # Build and run targets
 ├── README.md
@@ -18,15 +21,27 @@ origin-os/
 
 ## Build
 
-From the repository root:
+Build the bootloader and kernel from the repository root:
 
 ```bash
 make
 ```
 
+The bootloader is produced as:
+
+```text
+bootloader/build/efi/BOOTX64.EFI
+```
+
+The kernel is produced as:
+
+```text
+kernel/build/bin/kernel.elf
+```
+
 ## Run
 
-Build and run ORIGIN OS with QEMU:
+Build the ESP image and run ORIGIN OS with QEMU and OVMF:
 
 ```bash
 make run
@@ -34,27 +49,60 @@ make run
 
 QEMU uses OVMF to provide the UEFI firmware environment.
 
-## Current Status
+## Boot Flow
 
-ORIGIN is currently in the UEFI bootloader stage.
+The current boot flow is:
 
-Implemented and verified:
+```text
+UEFI Firmware
+      │
+      ▼
+BOOTX64.EFI
+      │
+      ▼
+UEFI bootloader
+      │
+      ├── Locate boot device
+      ├── Open filesystem
+      ├── Load oot\kernel.elf
+      ├── Load ELF64 kernel image
+      ├── Obtain framebuffer information
+      ├── Obtain final UEFI memory map
+      ├── Construct ORIGIN_BOOT_INFO
+      ├── ExitBootServices()
+      │
+      ▼
+kernel_entry
+      │
+      ▼
+kernel_main()
+```
 
-- UEFI bootloader entry point
-- UEFI system table access
-- Console output
-- UEFI Boot Services access
-- UEFI memory map acquisition
-- Memory map dumping
-- Automated build system
-- ESP image preparation
-- QEMU/OVMF boot workflow
+The bootloader transfers an `ORIGIN_BOOT_INFO *` pointer to the kernel. The
+current boot information contains the final UEFI memory map and framebuffer
+information.
 
-The current bootloader can start under UEFI, acquire the memory map, and dump its descriptors successfully.
+## Current Kernel
 
-## Roadmap
+The kernel currently initializes its framebuffer using the information
+provided by the bootloader, clears the display, renders its initial output,
+and enters a halt loop.
 
-The next major milestone is implementing a correct `ExitBootServices()` flow, followed by the boot protocol and kernel-loading stages.
+## Documentation
+
+Boot architecture and implementation documentation is available under:
+
+```text
+docs/boot/
+```
+
+See:
+
+- [Boot Process](docs/boot/architecture/boot-process.md)
+- [Boot Protocol](docs/boot/architecture/boot-protocol.md)
+- [UEFI](docs/boot/uefi/uefi.md)
+- [Memory Map](docs/boot/uefi/memory-map.md)
+- [Boot Documentation](docs/boot/README.md)
 
 ## License
 
