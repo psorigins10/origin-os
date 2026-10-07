@@ -2,7 +2,7 @@
 #define SIMPLE_TEXT_OUTPUT_PROTOCOL_H
 
 
-#include "../efi_types.h"
+#include "uefi/efi_types.h"
 
 
 #ifndef EFIAPI

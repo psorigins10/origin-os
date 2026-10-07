@@ -1,6 +1,6 @@
-#include "../../include/memory/memory_map.h"
-#include "../../include/uefi/efi_system_table.h"
-#include "../../include/uefi/efi_types.h"
+#include "memory/memory_map.h"
+#include "uefi/efi_system_table.h"
+#include "uefi/efi_types.h"
 
 
 EFI_STATUS GetMemoryMap(

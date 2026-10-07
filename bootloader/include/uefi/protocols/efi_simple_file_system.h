@@ -1,8 +1,8 @@
 #ifndef EFI_SIMPLE_FILE_SYSTEM_H
 #define EFI_SIMPLE_FILE_SYSTEM_H
 
-#include "../efi_types.h"
-#include "../efi_file.h"
+#include "uefi/efi_types.h"
+#include "uefi/efi_file.h"
 
 
 /*

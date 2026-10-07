@@ -1,7 +1,7 @@
 #ifndef ELF64_H
 #define ELF64_H
 
-#include "../uefi/efi_types.h"
+#include "uefi/efi_types.h"
 
 typedef struct {
     UINT8  e_ident[16];

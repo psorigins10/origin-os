@@ -1,12 +1,13 @@
-#include "../include/console/console.h"
-#include "../include/uefi/efi_system_table.h"
-#include "../include/memory/memory_map.h"
-#include "../include/memory/memory_map_dump.h"
-#include "../../include/boot/boot_info.h"
-#include "../include/uefi/protocols/efi_loaded_image.h"
-#include "../include/uefi/protocols/efi_simple_file_system.h"
-#include "../include/elf/elf_loader.h"
-#include "../include/uefi/protocols/efi_graphics_output.h"
+#include <origin/boot/boot_info.h>
+
+#include <console/console.h>
+#include <elf/elf_loader.h>
+#include <memory/memory_map.h>
+#include <memory/memory_map_dump.h>
+#include <uefi/efi_system_table.h>
+#include <uefi/protocols/efi_graphics_output.h>
+#include <uefi/protocols/efi_loaded_image.h>
+#include <uefi/protocols/efi_simple_file_system.h>
 
 static EFI_GUID GopGuid = {
     0x9042A9DE, 0x23DC, 0x4A38,

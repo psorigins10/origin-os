@@ -1,8 +1,8 @@
 #ifndef EFI_LOADED_IMAGE_H
 #define EFI_LOADED_IMAGE_H
 
-#include "../efi_types.h"
-#include "../efi_system_table.h"
+#include "uefi/efi_types.h"
+#include "uefi/efi_system_table.h"
 
 typedef struct {
    UINT32                        Revision;

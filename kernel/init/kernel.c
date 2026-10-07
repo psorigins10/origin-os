@@ -1,4 +1,4 @@
-#include "../../include/boot/boot_info.h"
+#include "origin/boot/boot_info.h"
 
 static ORIGIN_BOOT_INFO *g_bi;
 

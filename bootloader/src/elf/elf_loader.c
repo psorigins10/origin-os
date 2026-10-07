@@ -1,6 +1,6 @@
-#include "../../include/elf/elf_loader.h"
-#include "../../include/uefi/efi_types.h"
-#include "../../include/console/console.h"
+#include "elf/elf_loader.h"
+#include "uefi/efi_types.h"
+#include "console/console.h"
 
 /*
  * EFI status values used for more useful diagnostics.

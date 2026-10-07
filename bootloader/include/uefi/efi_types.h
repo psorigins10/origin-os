@@ -9,7 +9,9 @@
 #define NULL ((VOID *)0)
 #endif
 
+#ifndef UINT64_MAX
 #define UINT64_MAX 0xFFFFFFFFFFFFFFFFULL
+#endif
 
 // ============================================================================
 // Basic Types

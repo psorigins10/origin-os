@@ -1,5 +1,5 @@
 #pragma once
-#include "../efi_types.h"
+#include "uefi/efi_types.h"
 
 typedef struct {
     UINT32 RedMask, GreenMask, BlueMask, ReservedMask;

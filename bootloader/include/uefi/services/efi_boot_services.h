@@ -5,10 +5,10 @@
 // Includes
 // ============================================================================
 
-#include "../efi_table_header.h"
-#include "../efi_memory.h"
-#include "../efi_types.h"
-#include "../efi_annotations.h"
+#include "uefi/efi_table_header.h"
+#include "uefi/efi_memory.h"
+#include "uefi/efi_types.h"
+#include "uefi/efi_annotations.h"
 
 
 // ============================================================================

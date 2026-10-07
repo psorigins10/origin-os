@@ -1,5 +1,5 @@
-#include "../../include/memory/memory_map_dump.h"
-#include "../../include/console/console.h"
+#include "memory/memory_map_dump.h"
+#include "console/console.h"
 
 static void PrintHex64(
     EFI_SYSTEM_TABLE *SystemTable,
