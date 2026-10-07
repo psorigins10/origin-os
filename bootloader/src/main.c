@@ -694,6 +694,20 @@ EFI_STATUS EFIAPI efi_main(
      * kernel through BootInfo.
      * --------------------------------------------------------- */
 
+    BootInfo->magic = ORIGIN_BOOT_MAGIC;
+
+    BootInfo->boot_protocol_major =
+        ORIGIN_BOOT_PROTOCOL_MAJOR;
+
+    BootInfo->boot_protocol_minor =
+        ORIGIN_BOOT_PROTOCOL_MINOR;
+
+    BootInfo->bootloader_major =
+        ORIGIN_BOOTLOADER_MAJOR;
+
+    BootInfo->bootloader_minor =
+        ORIGIN_BOOTLOADER_MINOR;
+
     BootInfo->memory_map =
         (uint64_t)(UINTN)FinalMap;
 
