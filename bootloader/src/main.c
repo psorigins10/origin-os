@@ -440,6 +440,43 @@ EFI_STATUS EFIAPI efi_main(
         Halt();
     }
 
+
+    /* ---------------------------------------------------------
+    * Inspect available GOP modes.
+    * --------------------------------------------------------- */
+
+    for (UINT32 Mode = 0; Mode < Gop->Mode->MaxMode; Mode++)
+    {
+        EFI_GRAPHICS_OUTPUT_MODE_INFORMATION *Info;
+        UINTN InfoSize;
+
+        Status = Gop->QueryMode(
+            Gop,
+            Mode,
+            &InfoSize,
+            &Info
+        );
+
+        if (Status == EFI_SUCCESS)
+        {
+            Print(L"GOP Mode: ", SystemTable);
+            PrintHex64(Mode, SystemTable);
+
+            Print(L"  Width: ", SystemTable);
+            PrintHex64(Info->HorizontalResolution, SystemTable);
+
+            Print(L"  Height: ", SystemTable);
+            PrintHex64(Info->VerticalResolution, SystemTable);
+
+            Print(L"\r\n", SystemTable);
+        }
+    }
+
+
+    /* ---------------------------------------------------------
+    * Store framebuffer information in BootInfo.
+    * --------------------------------------------------------- */
+
     BootInfo->fb_base                = Gop->Mode->FrameBufferBase;
     BootInfo->fb_size                = Gop->Mode->FrameBufferSize;
     BootInfo->fb_width               = Gop->Mode->Info->HorizontalResolution;
