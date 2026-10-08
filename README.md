@@ -1,6 +1,7 @@
 # ORIGIN OS
 
-ORIGIN OS is a private operating system project being built from the ground up.
+ORIGIN OS is a private operating system project being built from the
+ground up.
 
 ## Project Structure
 
@@ -8,13 +9,16 @@ ORIGIN OS is a private operating system project being built from the ground up.
 origin-os/
 ├── arch/          # Architecture-specific kernel entry and low-level code
 ├── bootloader/    # UEFI bootloader
-│   ├── include/   # UEFI, ELF, and bootloader interfaces
-│   └── src/       # Bootloader implementation
-├── docs/          # Architecture, boot, and research documentation
-├── include/       # Shared boot interfaces
+├── docs/          # Architecture, design, boot, and research documentation
+├── include/       # Shared kernel and subsystem interfaces
 ├── kernel/        # ORIGIN kernel
+├── mm/            # Memory management
+├── sched/         # Scheduling and process management
+├── drivers/       # Hardware drivers
+├── fs/            # Filesystem and VFS
 ├── scripts/       # Build and development scripts
-├── Makefile       # Build and run targets
+├── tests/         # Unit and integration tests
+├── Makefile
 ├── README.md
 └── LICENSE
 ```
@@ -27,13 +31,13 @@ Build the bootloader and kernel from the repository root:
 make
 ```
 
-The bootloader is produced as:
+Bootloader output:
 
 ```text
 bootloader/build/efi/BOOTX64.EFI
 ```
 
-The kernel is produced as:
+Kernel output:
 
 ```text
 kernel/build/bin/kernel.elf
@@ -51,58 +55,64 @@ QEMU uses OVMF to provide the UEFI firmware environment.
 
 ## Boot Flow
 
-The current boot flow is:
-
 ```text
 UEFI Firmware
-      │
-      ▼
+     │
+     ▼
 BOOTX64.EFI
-      │
-      ▼
+     │
+     ▼
 UEFI bootloader
-      │
-      ├── Locate boot device
-      ├── Open filesystem
-      ├── Load oot\kernel.elf
-      ├── Load ELF64 kernel image
-      ├── Obtain framebuffer information
-      ├── Obtain final UEFI memory map
-      ├── Construct ORIGIN_BOOT_INFO
-      ├── ExitBootServices()
-      │
-      ▼
+     │
+     ├── Locate boot device
+     ├── Open filesystem
+     ├── Load boot/kernel.elf
+     ├── Load ELF64 kernel image
+     ├── Obtain framebuffer information
+     ├── Obtain final UEFI memory map
+     ├── Construct ORIGIN_BOOT_INFO
+     ├── ExitBootServices()
+     │
+     ▼
 kernel_entry
-      │
-      ▼
+     │
+     ▼
 kernel_main()
 ```
 
-The bootloader transfers an `ORIGIN_BOOT_INFO *` pointer to the kernel. The
-current boot information contains the final UEFI memory map and framebuffer
-information.
+## Current Implementation
 
-## Current Kernel
+The current implementation includes the bootloader, kernel entry path,
+boot protocol, framebuffer, and early kernel console output.
 
-The kernel currently initializes its framebuffer using the information
-provided by the bootloader, clears the display, renders its initial output,
-and enters a halt loop.
-
-## Documentation
-
-Boot architecture and implementation documentation is available under:
+Implemented subsystem documentation is maintained under:
 
 ```text
-docs/boot/
+docs/
 ```
 
-See:
+### Boot
 
+- [Boot Documentation](docs/boot/README.md)
 - [Boot Process](docs/boot/architecture/boot-process.md)
 - [Boot Protocol](docs/boot/architecture/boot-protocol.md)
 - [UEFI](docs/boot/uefi/uefi.md)
 - [Memory Map](docs/boot/uefi/memory-map.md)
-- [Boot Documentation](docs/boot/README.md)
+
+### Console
+
+- [Console Overview](docs/design/console/README.md)
+- [Console Architecture](docs/design/console/architecture.md)
+- [Console Rendering](docs/design/console/rendering.md)
+- [Console API](docs/design/console/api.md)
+
+## Development Status
+
+ORIGIN OS is under active development.
+
+Subsystems that are not yet implemented are documented separately as
+design, research, or planned work and are not represented as completed
+functionality.
 
 ## License
 
