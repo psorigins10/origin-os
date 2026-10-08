@@ -4,14 +4,15 @@
 
 static uint32_t cursor_x;
 static uint32_t cursor_y;
+static uint32_t console_columns;
 
 /*
  * Initialize the console cursor at the top-left corner.
  */
-void console_init(void)
-{
+void console_init(ORIGIN_BOOT_INFO *boot_info) {
     cursor_x = 0;
     cursor_y = 0;
+    console_columns = boot_info->fb_width / 8;
 }
 
 /*
@@ -45,6 +46,10 @@ void console_writeLine(
             );
 
             cursor_x++;
+            if (cursor_x >= console_columns) {
+                cursor_x = 0;
+                cursor_y++;
+            }
         }
 
         string++;

@@ -4,11 +4,12 @@
 #include <stdint.h>
 
 #include "origin/video/color/framebuffer_color.h"
+#include "origin/boot/boot_info.h"
 
 /*
  * Initialize the console cursor position.
  */
-void console_init(void);
+void console_init(ORIGIN_BOOT_INFO *boot_info);
 
 /*
  * Write text using the fixed-size terminal font.
