@@ -61,7 +61,9 @@ BOOT_SRCS := \
 
 KERNEL_C_SRCS := \
 	kernel/init/kernel.c \
-	kernel/video/framebuffer.c
+	kernel/video/framebuffer.c \
+	kernel/console/console.c \
+	kernel/printk/printk.c
 
 KERNEL_ASM_SRCS := \
 	arch/x86_64/boot/kernel_entry.asm
