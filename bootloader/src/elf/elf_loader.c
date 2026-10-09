@@ -89,10 +89,14 @@ EFI_STATUS LoadKernel(
      */
 
     if (Header->e_ident[6] != 1) {
-        Print(L"ELF: invalid ELF version\r\n", SystemTable);
+        Print(L"ELF: Invalid ELF version\r\n", SystemTable);
         return EFI_INVALID_PARAMETER;
     }
 
+    if (Header->e_version != 1) {
+        Print(L"ELF: Invalid ELF e_version\r\n", SystemTable);
+        return EFI_INVALID_PARAMETER;
+    }
 
     /*
      * EM_X86_64 = 0x3E
