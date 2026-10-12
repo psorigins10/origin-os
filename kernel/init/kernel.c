@@ -3,6 +3,8 @@
 #include "origin/printk/printk.h"
 #include "origin/console/console.h"
 #include "origin/video/color/framebuffer_color.h"
+#include "origin/drivers/serial/serial.h"
+#include "origin/arch/x86_64/port_io.h"
 
 /*
  * Kernel entry point.
@@ -86,6 +88,10 @@ void kernel_main(ORIGIN_BOOT_INFO *BootInfo)
     printk("READY\n");
     printk("Kernel initialized successfully.\n");
     printk_color("System ready.\n", ORIGIN_COLOR_GREEN);
+
+    // Output at terminal.
+    serial_init();
+    serial_write("READY to launch\n");
 
     /*
      * Keep the processor halted until the next kernel subsystem
