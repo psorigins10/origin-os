@@ -1,4 +1,4 @@
-.PHONY: all bootloader kernel clean run
+.PHONY: all bootloader kernel clean run debug debug-gdb
 
 # ---------------------------------------------------------------------------
 # Toolchain
@@ -23,7 +23,7 @@ KERNEL_INC := -Ikernel/include
 BOOT_CFLAGS   := -ffreestanding $(SHARED_INC) $(BOOT_INC) -MMD -MP
 BOOT_LDFLAGS  := -nostdlib -Wl,--subsystem,10 -Wl,--entry,efi_main
 
-KERNEL_CFLAGS := -ffreestanding -fno-pie -fno-stack-protector -mno-red-zone \
+KERNEL_CFLAGS := -g -ffreestanding -fno-pie -fno-stack-protector -mno-red-zone \
                  $(SHARED_INC) $(KERNEL_INC) -MMD -MP
 KERNEL_LDFLAGS := -nostdlib -nodefaultlibs -nostartfiles -no-pie -Wl,-e,kernel_entry
 
@@ -144,3 +144,11 @@ run: all
 	@mkdir -p bootloader/build/esp
 	./scripts/build-esp.sh
 	./scripts/run-qemu.sh
+
+debug-gdb:
+	gdb -x scripts/kernel.gdb kernel/build/bin/kernel.elf
+
+debug: all
+	@mkdir -p bootloader/build/esp
+	./scripts/build-esp.sh
+	./scripts/debug-qemu.sh
