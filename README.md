@@ -1,6 +1,6 @@
 # ORIGIN OS
 
-ORIGIN OS is a private operating system project being developed from the ground up.
+ORIGIN OS is an open source operating system project being developed from the ground up.
 
 ## Project Structure
 
